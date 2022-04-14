@@ -71,3 +71,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 npm install  #if you copy only the progect without libraries, this will install libraries from conf file package.json
 npm start
+npm run build

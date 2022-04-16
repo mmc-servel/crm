@@ -83,10 +83,9 @@ public class HTTPProcessor implements HttpHandler {
                 os.write(errorMessage.getBytes());
                 os.close();
             } catch (IOException eexx) {
-                System.out.println("Error======================" + eexx.getMessage());
-
+                System.out.println("Error============" + eexx.getMessage()+" ThreadID"+Thread.currentThread().getId());
             }
-            System.out.println("Error=" + eex.getMessage());
+            System.out.println("Error=" + eex.getMessage()+" ThreadName="+Thread.currentThread().getId());
         }
     }
 

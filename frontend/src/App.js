@@ -7,22 +7,27 @@ import { useState } from "react";
 
 function App() {
   const history = useHistory();
-  const [isLoogedIn, tryToLogin] = useState(false);
+  const [sessionid, setSessionID] = useState("");
 
-  function onLoginHandler() {
-    tryToLogin(true);
+  let solution = {};
+
+  function onLoginHandler(loginDetails) {
+    //alert(loginDetails.username);
+    //solution.username=loginDetails.username;
+
+    solution.onLogAreaChange(loginDetails.username);
+    setSessionID("spoidfidsfoidsf");
     history.replace("/");
   }
 
   return (
-    <NavigationBar>
-      {isLoogedIn ? null : <Redirect to="/login"></Redirect>}
+    <NavigationBar solution={solution}>
       <Switch>
         <Route path="/" exact>
-          <Main  />
+          {sessionid == "" ? ( <Login onLoginHandler={onLoginHandler} /> ) : ( <Main /> )}
         </Route>
         <Route path="/users">
-          <Users />
+          {sessionid == "" ? ( <Login onLoginHandler={onLoginHandler} /> ) : ( <Users /> )}
         </Route>
         <Route path="/login">
           <Login onLoginHandler={onLoginHandler} />

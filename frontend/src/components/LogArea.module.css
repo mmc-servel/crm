@@ -1,0 +1,19 @@
+.internal_login_div {
+  background-color: #77002e;
+  display: flex;
+  flex-direction: column;
+}
+
+div a {
+  text-decoration: none;
+  font-size: 1.5rem;
+  color: #fcb8d2;
+}
+
+.log_line {
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #fcb8d2;
+}

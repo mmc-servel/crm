@@ -34,12 +34,10 @@ public class HTTPProcessor implements HttpHandler {
 
     private void processApi(HttpExchange t) {
         try {
-            //t.getRequestMethod() return error in case of GET method
-            sendResponce(t, HTTPApi.getProcessor(t).processRequest().getResponeString().getBytes(), "application/json");
-        } catch (IOException ex) {
-            Logger.getLogger(MainClass.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | IllegalArgumentException | InvocationTargetException ex) {
-            Logger.getLogger(HTTPProcessor.class.getName()).log(Level.SEVERE, null, ex);
+            //TO DO: t.getRequestMethod() return error in case of GET method
+            sendResponce(t, HTTPApi.getProcessor(t).processRequest().getResponeString().toString().getBytes(), "application/json");
+        }  catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | IllegalArgumentException | InvocationTargetException ex) {
+            System.out.println("ERROR:(P1) "+ex.toString());
         }
     }
 

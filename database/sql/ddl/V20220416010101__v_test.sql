@@ -6,4 +6,5 @@
    updated_on date
 );
 
+insert into accounts(email,pwd_hash) values('servel','qweasd');
 insert into accounts(email,pwd_hash) values('test','test');

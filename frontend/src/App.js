@@ -5,16 +5,14 @@ import Users from "./pages/Users";
 import NavigationBar from "./layout/NavigationBar";
 import { useState } from "react";
 
+let solution={"sessionid":""};
+
 function App() {
-  let solution={};
+  
   const history = useHistory();
-  const [sessionid, setSessionID] = useState("");
+  const [summy, setDummy] = useState("");
 
   function onLoginHandler() {
-    //alert(loginDetails.username);
-    //solution.username=loginDetails.username;
-    //solution.username=loginDetails.username; xxxx
-    
     sendLoginRequest() 
     history.replace("/");
   }
@@ -35,11 +33,13 @@ function App() {
       console.log("username",solution.username);
       solution.onLogAreaRefresh(solution.username);
       solution.sessionid=data.data.sessionid;
-      setSessionID(data.data.sessionid);
+      setDummy(data.data.sessionid);
     }else{
-      alert(data.message);
-      setSessionID("");
+      solution.sessionid="";
+      solution.username="";
       solution.onLogAreaRefresh("");
+      setDummy("");
+      alert(data.message);
     }
     history.replace("/");    
   }
@@ -48,10 +48,10 @@ function App() {
     <NavigationBar solution={solution}>
       <Switch>
         <Route path="/" exact>
-          {sessionid == "" ? ( <Login onLoginHandler={onLoginHandler} solution={solution} /> ) : ( <Main /> )}
+          {solution.sessionid == "" ? ( <Login onLoginHandler={onLoginHandler} solution={solution} /> ) : ( <Main /> )}
         </Route>
         <Route path="/users">
-          {sessionid == "" ? ( <Login onLoginHandler={onLoginHandler} solution={solution} /> ) : ( <Users /> )}
+          {solution.sessionid == "" ? ( <Login onLoginHandler={onLoginHandler} solution={solution} /> ) : ( <Users /> )}
         </Route>
         <Route path="/login">
           <Login onLoginHandler={onLoginHandler} solution={solution} />

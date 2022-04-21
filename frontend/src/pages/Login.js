@@ -4,18 +4,18 @@ import classes from "./Login.module.css";
 
 function Login(props) {
 
-  const [username,setUsername] = useState('');
+  //const [username,setUsername] = useState('');
 
   const onUsernameChangeHandler=(event)=>{
     props.solution.username = event.target.value;
-    setUsername(event.target.value);
+    //setUsername(event.target.value);
   };
 
-  const [password,setPassword] = useState('');
+  //const [password,setPassword] = useState('');
 
   const onPasswordChangeHandler=(event)=>{
     props.solution.password = event.target.value;
-    setPassword(event.target.value);
+    //setPassword(event.target.value);
   };
 
   const onLocalLoginHander=(event)=>{

@@ -1,19 +1,18 @@
 package com.mmc.api;
+
+import com.mmc.api.utils.Convert;
 import org.json.*;
+
 public class HTTPApiResponce {
 
     JSONObject responce;
 
     public HTTPApiResponce(String status, String message, String data) {
-        try {
-            responce = new JSONObject("{\"responce\":\""+status+"\",\"message\":\""+message+"\",\"data\":"+data+"}");
-        } catch (JSONException ee) {
-            System.out.println("ERROR: Error converting request body to JSON. " + ee.getMessage());
-        }            
+        responce = Convert.getInstance().stringToJson("{\"responce\":\"" + status + "\",\"message\":\"" + message + "\",\"data\":" + data + "}");
     }
 
-    public JSONObject getResponeString() {  
-        System.out.println("    ResponceJSON="+responce);
+    public JSONObject getResponeString() {
+        System.out.println("    ResponceJSON=" + responce);
         return responce;
     }
 }

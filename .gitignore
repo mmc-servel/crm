@@ -25,3 +25,4 @@ hs_err_pid*
 
 #Added by Sergiu Velescu - ignore WEB-INF that is copied by MAVEN plugin
 /backend/src/main/resources/WEB-INF/
+/frontend/nbproject/private/

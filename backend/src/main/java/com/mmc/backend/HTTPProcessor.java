@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class HTTPProcessor implements HttpHandler {
-    
+
     public static HashMap<String, String> sessionMap = new HashMap<String, String>();
     private int i = 0;
 
@@ -36,19 +36,27 @@ public class HTTPProcessor implements HttpHandler {
         try {
             //TO DO: t.getRequestMethod() return error in case of GET method
             sendResponce(t, HTTPApi.getProcessor(t).processRequest().getResponeString().toString().getBytes(), "application/json");
-        }  catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | IllegalArgumentException | InvocationTargetException ex) {
-            System.out.println("ERROR:(P1) "+ex.toString());
+        } catch (Exception ex) {
+            Logger.getLogger(HTTPProcessor.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("xxxxxxxxxxxxxxxx");
+            HTTPApiResponce vvv = new HTTPApiResponce("ERROR", "Request error. Check server logs.", "{}");
+            sendResponce(t, vvv.getResponeString().toString().getBytes(), "application/json");
         }
+
     }
 
-    private void sendResponce(HttpExchange t, byte[] msg, String contentType) throws IOException {
+    private void sendResponce(HttpExchange t, byte[] msg, String contentType) {
         OutputStream os = t.getResponseBody();
         if (contentType != null) {
             t.getResponseHeaders().put("Content-Type", Collections.singletonList(contentType));
         }
-        t.sendResponseHeaders(200, msg.length);
-        os.write(msg, 0, msg.length);
-        os.close();
+        try {
+            t.sendResponseHeaders(200, msg.length);
+            os.write(msg, 0, msg.length);
+            os.close();
+        } catch (IOException ex) {
+            Logger.getLogger(HTTPProcessor.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void processReact(HttpExchange t) {
@@ -81,9 +89,9 @@ public class HTTPProcessor implements HttpHandler {
                 os.write(errorMessage.getBytes());
                 os.close();
             } catch (IOException eexx) {
-                System.out.println("Error============" + eexx.getMessage()+" ThreadID"+Thread.currentThread().getId());
+                Logger.getLogger(HTTPProcessor.class.getName()).log(Level.SEVERE, null, eexx);
             }
-            System.out.println("Error=" + eex.getMessage()+" ThreadName="+Thread.currentThread().getId());
+            Logger.getLogger(HTTPProcessor.class.getName()).log(Level.SEVERE, null, eex);
         }
     }
 

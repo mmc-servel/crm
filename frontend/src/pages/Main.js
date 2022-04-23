@@ -3,10 +3,16 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import React, { Component } from 'react';
 import classes from "./Main.module.css";
 import Card from "../components/Card";
-import TableMain from "../components/TableMain";
+//import Table from "../comonents/table/Table";
+import Table from "../components/table/Table"
+//import TableMain from "../components/TableMain";
 
 function Main(props) {
-  
+  let products=[
+                {"id":"1","name":"Sergiu","age":"43","prof":"Engineer"},
+                {"id":"2","name":"Lilea","age":"42","prof":"Teacher"},
+                {"id":"3","name":"Victor","age":"44","prof":"House"}
+              ];
 
   return (
     <section className={classes.main}>
@@ -17,9 +23,8 @@ function Main(props) {
             <input type="email" required id="title" />
           </div>
 
-          <div className={classes.control}>
-            <TableMain />
-          </div>
+         <Table products={products}/>
+
         </div>
       </Card>
     </section>

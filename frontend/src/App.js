@@ -16,10 +16,21 @@ function App() {
     sendLoginRequest() 
     history.replace("/");
   }
-
+//------------------------------------------------------
+function getProductsRequest() {
+  fetch('api/products', { method: 'POST', body: JSON.stringify({}), headers: { 'Content-Type': 'application/json' } }).then((response) => {
+    return response.json();
+  }).then((data) => {
+    console.log("Products",data);
+    if(data.responce!="OK"){
+      alert(data.message);
+    }
+  });
+}
+//------------------------------------------------------
   function sendLoginRequest() {
     document.body.style.background = 'red';
-    fetch('http://localhost:8000/api/login', { method: 'POST', body: JSON.stringify({ 'username': solution.username,'password':solution.password }), headers: { 'Content-Type': 'application/json' } }).then((response) => {
+    fetch('api/login', { method: 'POST', body: JSON.stringify({ 'username': solution.username,'password':solution.password }), headers: { 'Content-Type': 'application/json' } }).then((response) => {
       return response.json();
     }).then((data) => {
       processLoginResponce(data);
@@ -41,6 +52,7 @@ function App() {
       setDummy("");
       alert(data.message);
     }
+    getProductsRequest();
     history.replace("/");    
   }
 

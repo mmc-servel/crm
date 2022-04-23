@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import org.json.*;
+import com.mmc.api.utils.Convert;
 
 public abstract class AAPIProcessor {
 
@@ -15,7 +16,7 @@ public abstract class AAPIProcessor {
         this.t = t;
     }
 
-    abstract public HTTPApiResponce processRequest() throws UnsupportedEncodingException, IOException;
+    abstract public HTTPApiResponce processRequest() throws Exception;
 
     protected JSONObject getrequestBodyString() throws UnsupportedEncodingException, IOException {
         InputStreamReader isr = new InputStreamReader(t.getRequestBody(), "utf-8");
@@ -27,13 +28,7 @@ public abstract class AAPIProcessor {
         }
         br.close();
         isr.close();
-        JSONObject reqJsonObj = null;
-        try {
-            reqJsonObj = new JSONObject(buf.toString());
-            System.out.println("    RequestJSON="+reqJsonObj.toString());
-        } catch (JSONException ee) {
-            System.out.println("ERROR: Error converting request body to JSON. " + ee.getMessage());
-        }
-        return reqJsonObj;
+        System.out.println("    RequestJSON="+buf.toString());
+        return Convert.getInstance().stringToJson(buf.toString());
     }
 }

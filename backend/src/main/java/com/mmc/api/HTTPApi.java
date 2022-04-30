@@ -13,6 +13,7 @@ public class HTTPApi {
     static {
         PROCESSORLIST.put("/api/login", "com.mmc.login.Login");
         PROCESSORLIST.put("/api/products", "com.mmc.login.Products");
+        PROCESSORLIST.put("/api/products/delete", "com.mmc.login.ProductDelete");
     }
 
     public static AAPIProcessor getProcessor(HttpExchange t) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {        

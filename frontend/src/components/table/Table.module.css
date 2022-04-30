@@ -1,0 +1,4 @@
+.prod_table{
+    display: flex;
+    flex-direction: column;
+  }

@@ -84,7 +84,6 @@
                             <outputDirectory>${basedir}/src/main/resources/WEB-INF/</outputDirectory>
                             <resources>          
                                 <resource>
-                                    <!-- <directory>C:\\work\\ReactBuild\\</directory> -->
                                     <directory>${basedir}/../frontend/build/</directory>                                    
                                     <filtering>true</filtering>
                                 </resource>

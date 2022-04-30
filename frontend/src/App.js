@@ -21,8 +21,11 @@ function getProductsRequest() {
   fetch('api/products', { method: 'POST', body: JSON.stringify({}), headers: { 'Content-Type': 'application/json' } }).then((response) => {
     return response.json();
   }).then((data) => {
-    console.log("Products",data);
-    if(data.responce!="OK"){
+    solution.products=[...data.data];
+    console.log("Products",data.data);
+    console.log("Solution",solution.products);
+    solution.updatemain(Math.random());
+    if(data.responce!=="OK"){
       alert(data.message);
     }
   });
@@ -40,7 +43,7 @@ function getProductsRequest() {
   function processLoginResponce(data) {
     console.log('Success:', data);
     document.body.style.background = 'white';
-    if(data.responce=="OK"){
+    if(data.responce==="OK"){
       console.log("username",solution.username);
       solution.onLogAreaRefresh(solution.username);
       solution.sessionid=data.data.sessionid;
@@ -60,10 +63,10 @@ function getProductsRequest() {
     <NavigationBar solution={solution}>
       <Switch>
         <Route path="/" exact>
-          {solution.sessionid == "" ? ( <Login onLoginHandler={onLoginHandler} solution={solution} /> ) : ( <Main /> )}
+          {solution.sessionid === "" ? ( <Login onLoginHandler={onLoginHandler} solution={solution} /> ) : ( <Main solution={solution} getProductsRequest={getProductsRequest}/> )}
         </Route>
         <Route path="/users">
-          {solution.sessionid == "" ? ( <Login onLoginHandler={onLoginHandler} solution={solution} /> ) : ( <Users /> )}
+          {solution.sessionid === "" ? ( <Login onLoginHandler={onLoginHandler} solution={solution} /> ) : ( <Users /> )}
         </Route>
         <Route path="/login">
           <Login onLoginHandler={onLoginHandler} solution={solution} />

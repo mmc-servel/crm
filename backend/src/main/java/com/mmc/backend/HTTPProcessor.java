@@ -1,16 +1,15 @@
 package com.mmc.backend;
 
 import com.mmc.api.*;
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,23 +34,23 @@ public class HTTPProcessor implements HttpHandler {
     private void processApi(HttpExchange t) {
         try {
             //TO DO: t.getRequestMethod() return error in case of GET method
-            sendResponce(t, HTTPApi.getProcessor(t).processRequest().getResponeString().toString().getBytes(), "application/json");
+            sendResponce(t,200, HTTPApi.getProcessor(t).processRequest().getResponeString().toString().getBytes(), "application/json");
         } catch (Exception ex) {
             Logger.getLogger(HTTPProcessor.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("xxxxxxxxxxxxxxxx");
             HTTPApiResponce vvv = new HTTPApiResponce("ERROR", "Request error. Check server logs.", "{}");
-            sendResponce(t, vvv.getResponeString().toString().getBytes(), "application/json");
+            sendResponce(t,200, vvv.getResponeString().toString().getBytes(), "application/json");
         }
 
     }
 
-    private void sendResponce(HttpExchange t, byte[] msg, String contentType) {
+    private void sendResponce(HttpExchange t,int httpStatus, byte[] msg, String contentType) {
         OutputStream os = t.getResponseBody();
         if (contentType != null) {
-            t.getResponseHeaders().put("Content-Type", Collections.singletonList(contentType));
+            //t.getResponseHeaders().put("Content-Type", Collections.singletonList(contentType));
+            t.getResponseHeaders().set("Content-Type", contentType);
         }
         try {
-            t.sendResponseHeaders(200, msg.length);
+            t.sendResponseHeaders(httpStatus, msg.length);
             os.write(msg, 0, msg.length);
             os.close();
         } catch (IOException ex) {
@@ -61,36 +60,31 @@ public class HTTPProcessor implements HttpHandler {
 
     private void processReact(HttpExchange t) {
         try {
+
             String fileName = t.getRequestURI().toString();
-            if (!fileName.startsWith("/static") && (!fileName.startsWith("/api"))) { //We process only "/static" (that comes from React) and "/api" all other GET rewuests are redirected to /index.html
+            if (fileName.equals("/")) {
                 fileName = "/index.html";
             }
 
             fileName = "WEB-INF" + fileName.replace("/test", "");
-            //String fileName = "WEB-INF/index.html";
-            System.out.println("FileName=" + fileName);
-            //-----------------------------------------
+            System.out.println("    FileName=" + fileName);
             InputStream is = MainClass.class.getClassLoader().getResourceAsStream(fileName);
+            if (is == null) {
+                String errorMessage = "    ERROR: The file " + fileName + " not found.";
+                System.out.println(errorMessage);
+                sendResponce(t,404, errorMessage.getBytes(), "text/plain");
+                return;
+            }
             byte[] fileData = new byte[1024 * 1024];
-            int nRead = 0;
+            int nRead;
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             while ((nRead = is.read(fileData, 0, fileData.length)) != -1) {
-
                 bos.write(fileData, 0, nRead);
             }
             is.close();
-            //-------------------------------------
-            sendResponce(t, bos.toByteArray(), null);
+            String contentType=fileName.endsWith(".js")?"text/javascript":"";
+            sendResponce(t,200, bos.toByteArray(), contentType);
         } catch (IOException eex) {
-            String errorMessage = "Catched error: Check system log.";
-            try {
-                t.sendResponseHeaders(404, errorMessage.getBytes().length);
-                OutputStream os = t.getResponseBody();
-                os.write(errorMessage.getBytes());
-                os.close();
-            } catch (IOException eexx) {
-                Logger.getLogger(HTTPProcessor.class.getName()).log(Level.SEVERE, null, eexx);
-            }
             Logger.getLogger(HTTPProcessor.class.getName()).log(Level.SEVERE, null, eex);
         }
     }

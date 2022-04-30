@@ -1,5 +1,5 @@
 import { Route, Switch, Redirect } from "react-router-dom";
-
+import { useState } from "react";
 import React, { Component } from 'react';
 import classes from "./Main.module.css";
 import Card from "../components/Card";
@@ -8,11 +8,8 @@ import Table from "../components/table/Table"
 //import TableMain from "../components/TableMain";
 
 function Main(props) {
-  let products=[
-                {"id":"1","name":"Sergiu","age":"43","prof":"Engineer"},
-                {"id":"2","name":"Lilea","age":"42","prof":"Teacher"},
-                {"id":"3","name":"Victor","age":"44","prof":"House"}
-              ];
+  const [dummy, setDummy] = useState("");
+  props.solution.updatemain=setDummy;
 
   return (
     <section className={classes.main}>
@@ -23,7 +20,7 @@ function Main(props) {
             <input type="email" required id="title" />
           </div>
 
-         <Table products={products}/>
+         {props.solution.products!=null?<Table products={props.solution.products} getProductsRequest={props.getProductsRequest} getProductsRequest={props.getProductsRequest}/>:null}
 
         </div>
       </Card>

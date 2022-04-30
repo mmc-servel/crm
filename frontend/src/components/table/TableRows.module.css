@@ -1,0 +1,6 @@
+.prod_tablerow{
+    display: flex;
+    flex-direction: row;
+    height: 1.5rem;
+    border-top: 1px solid gray;
+  }
